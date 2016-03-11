@@ -1,25 +1,15 @@
 import angular from 'angular';
+import uiRouter from 'angular-ui-router';
+import angularMaterial from 'angular-material';
+import appComponent from './app.component';
+import coreView from '../features/coreView';
 
 import '../style/app.css';
+import 'angular-material/angular-material.css';
+import 'angular-material/angular-material.layouts.css';
 
-let app = () => {
-  return {
-    template: require('./app.html'),
-    controller: 'AppCtrl',
-    controllerAs: 'app'
-  }
-};
+export default angular.module('app', [angularMaterial, coreView, uiRouter])
+  .component('wdApp', appComponent)
+  .value('$routerRootComponent', 'wdApp')
+  .name;
 
-class AppCtrl {
-  constructor() {
-    this.url = 'https://github.com/preboot/angular-webpack';
-  }
-}
-
-const MODULE_NAME = 'app';
-
-angular.module(MODULE_NAME, [])
-  .directive('app', app)
-  .controller('AppCtrl', AppCtrl);
-
-export default MODULE_NAME;

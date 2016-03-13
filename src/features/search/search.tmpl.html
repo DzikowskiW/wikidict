@@ -1,38 +1,45 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
         <h2>
-            <span>Wiki Dictionary</span>
+            <span class="logoFont">Wiki Dictionary</span>
         </h2>
     </div>
 </md-toolbar>
 
-<div layout="row">
-    <md-input-container>
-        <label>Search</label>
-        <input>
-    </md-input-container>
-    <md-input-container>
-        <label>From</label>
-        <md-select>
-            <md-option value="en">
-                English
-            </md-option>
-            <md-option value="pl">
-                Polish
-            </md-option>
-        </md-select>
-    </md-input-container>
-    <md-input-container>
-        <label>To</label>
-        <md-select>
-            <md-option value="en">
-                English
-            </md-option>
-            <md-option value="pl">
-                Polish
-            </md-option>
-        </md-select>
-    </md-input-container>
+<div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
+    <div class="padded" md-whiteframe="1"
+         flex-sm="45" flex-gt-sm="35" flex-gt-md="25"
+         layout layout-align="center center">
+        <md-input-container md-no-float class="md-block">
+            <input  placeholder="Search">
+        </md-input-container>
+        <md-input-container>
+            <md-button class="md-raised md-primary">Search</md-button>
+        </md-input-container>
+    </div>
+
+
+    <!--<md-input-container>-->
+        <!--<label>From</label>-->
+        <!--<md-select>-->
+            <!--<md-option value="en">-->
+                <!--English-->
+            <!--</md-option>-->
+            <!--<md-option value="pl">-->
+                <!--Polish-->
+            <!--</md-option>-->
+        <!--</md-select>-->
+    <!--</md-input-container>-->
+    <!--<md-input-container>-->
+        <!--<label>To</label>-->
+        <!--<md-select>-->
+            <!--<md-option value="en">-->
+                <!--English-->
+            <!--</md-option>-->
+            <!--<md-option value="pl">-->
+                <!--Polish-->
+            <!--</md-option>-->
+        <!--</md-select>-->
+    <!--</md-input-container>-->
 </div>
 
-<md-icon md-font-icon="fa-gear" class="fa s32 md-primary md-hue-2"></md-icon>

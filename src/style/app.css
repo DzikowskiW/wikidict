@@ -21,3 +21,7 @@ md-icon.fa {
 md-icon.s32 span {
     padding-left:8px;
 }
+
+.logoFont {
+    font-family: 'Bree Serif', serif;
+}

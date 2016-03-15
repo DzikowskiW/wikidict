@@ -30,7 +30,10 @@ module.exports = function makeWebpackConfig () {
    * Karma will set this when it's a test build
    */
   config.entry = isTest ? {} : {
-    app: './src/app/app.js'
+    app: './src/app/app.js',
+    test: [
+      'sinon/pkg/sinon.js',
+    ],
   };
 
   /**
@@ -116,7 +119,18 @@ module.exports = function makeWebpackConfig () {
       // Allow loading html through js
       test: /\.html$/,
       loader: 'raw'
-    }]
+    },
+    {
+      test: /sinon\/pkg\/sinon\.js/,
+      loader: 'imports?define=>false,require=>false',
+    },
+    ],
+  };
+
+  config.resolve = {
+    alias: {
+      sinon: 'sinon/pkg/sinon.js',
+    },
   };
 
   // ISPARTA LOADER
@@ -124,6 +138,7 @@ module.exports = function makeWebpackConfig () {
   // Instrument JS files with Isparta for subsequent code coverage reporting
   // Skips node_modules and files that end with .test.js
   if (isTest) {
+
     config.module.preLoaders.push({
       test: /\.js$/,
       exclude: [

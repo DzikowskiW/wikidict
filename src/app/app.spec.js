@@ -15,7 +15,6 @@ describe('App Module', function() {
     });
 
     it('should contain the starter url', function() {
-      expect(ctrl.url).to.equal('https://github.com/preboot/angular-webpack');
     });
   });
 });

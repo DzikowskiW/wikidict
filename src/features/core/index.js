@@ -1,9 +1,10 @@
 import angular from 'angular';
+import translator from './translator';
 
 import { translationUrl } from './params';
-import translationResultFetcher from './translationResultFetcher.factory';
+import searchStore from './searchStore.factory';
 
-export default angular.module('wikiDict.core', [])
+export default angular.module('wikiDict.core', [translator])
   .constant('translationUrl', translationUrl)
-  .factory('translationResultFetcher', translationResultFetcher)
+  .factory('searchStore', searchStore)
   .name;

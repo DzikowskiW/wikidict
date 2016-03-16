@@ -1,6 +1,6 @@
-translationResultFetcher.$injector = ['$http', 'translationUrl'];
+translationResultFetcher.$injector = ['$http'];
 
-export default function translationResultFetcher($http, translationUrl) {
+export default function translationResultFetcher($http) {
   return {
     translate,
   };
@@ -26,15 +26,17 @@ export default function translationResultFetcher($http, translationUrl) {
         prop: 'langlinks',
         lllang: langTo,
         format: 'json',
-      },
-      headers: {
-        Origin: 'http://localhost:8080',
+        origin: 'http://localhost:8080', // TODO create a service const
       },
     });
   }
 
   function generateUrl(langFrom) {
     return `https://${langFrom}.wikipedia.org/w/api.php`;
-    //?action=query&titles=Albert%20Einstein&prop=langlinks&lllang=en&format=json
+    // ?action=query&titles=Albert%20Einstein&prop=langlinks&lllang=en&format=json
+  }
+
+  function formatResults(wikimediaResults){
+    return '';
   }
 }

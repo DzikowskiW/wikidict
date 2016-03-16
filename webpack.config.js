@@ -30,10 +30,7 @@ module.exports = function makeWebpackConfig () {
    * Karma will set this when it's a test build
    */
   config.entry = isTest ? {} : {
-    app: './src/app/app.js',
-    test: [
-      'sinon/pkg/sinon.js',
-    ],
+    app: './src/app/app.js'
   };
 
   /**
@@ -167,6 +164,12 @@ module.exports = function makeWebpackConfig () {
    */
   config.plugins = [];
 
+  if (isTest) {
+    config.externals = {
+      angular: 'angular',
+    };
+  }
+
   // Skip rendering index.html in test mode
   if (!isTest) {
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
@@ -214,7 +217,7 @@ module.exports = function makeWebpackConfig () {
    */
   config.devServer = {
     contentBase: './src/public',
-    stats: 'minimal'
+    stats: 'minimal',
   };
 
   return config;

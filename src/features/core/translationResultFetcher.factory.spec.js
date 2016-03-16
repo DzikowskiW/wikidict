@@ -9,17 +9,16 @@ describe('App Core Module', function() {
   describe('Factory: translationResultFetcher', function() {
     let resultFetcher;
 
+    // MOCKS
+    const returnedValue = Symbol();
+    const httpMock = sinon.stub().returns(returnedValue);
+
+    // SETUP
     beforeEach(function() {
       angular.mock.module(core);
 
-      const httpMock = {
-        jsonp: sinon.spy(),
-      };
-      const urlMock = 'https://example.url';
-
       angular.mock.module(function($provide) {
         $provide.value('$http', httpMock);
-        $provide.value('translationUrl', urlMock);
       });
 
       angular.mock.inject(function($injector) {
@@ -27,19 +26,39 @@ describe('App Core Module', function() {
       });
     });
 
-
+    // TESTS
     it('should be able to fetch jsonp translated results from wikipedia', function() {
       expect(resultFetcher).to.respondTo('translate');
     });
 
-    it('should throw an exception if the phrase is null', function() {
-      expect(resultFetcher.translate(null, 'PL', 'EN')).to.throw('Missing phrase');
+    it('should throw an exception if the phrase is null, number', function() {
+      expect(() => resultFetcher.translate(null, 'PL', 'EN'))
+        .to.throw(/phrase/);
     });
 
-    xit('should throw an exception if the language FROM is null', function() {
+    it('should throw an exception if the phrase is number', function() {
+      expect(() => resultFetcher.translate(12, 'PL', 'EN'))
+        .to.throw(/phrase/);
     });
 
-    xit('should throw an exception if the language TO is null', function() {
+    it('should throw an exception if the phrase is empty', function() {
+      expect(() => resultFetcher.translate('', 'PL', 'EN'))
+        .to.throw(/phrase/);
+    });
+
+    it('should throw an exception if the language FROM is null', function() {
+      expect(() => resultFetcher.translate('pies', null, 'EN'))
+        .to.throw(/ from /);
+    });
+
+    it('should throw an exception if the language TO is null', function() {
+      expect(() => resultFetcher.translate('pies', 'PL', null))
+        .to.throw(/ to /);
+    });
+
+    it('should return promise', function() {
+      const result = resultFetcher.translate('pies', 'PL', 'EN');
+      expect(result).to.equal(returnedValue);
     });
   });
 });

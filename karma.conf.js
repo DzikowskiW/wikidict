@@ -19,6 +19,7 @@ module.exports = function karmaConfig(config) {
     ],
 
     files: [
+      { pattern: 'node_modules/angular/angular.min.js', watched: false },
       // Grab all files in the app folder that contain .spec.
       'src/tests.webpack.js',
     ],

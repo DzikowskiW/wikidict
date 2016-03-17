@@ -3,7 +3,7 @@ import SearchCtrl from './search.ctrl';
 const searchComponent = {
   template: require('./search.tmpl.html'),
   controller: SearchCtrl,
-  contollerAs: 'vm',
+  controllerAs: 'vm',
 };
 
 export default searchComponent;

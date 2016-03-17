@@ -1,12 +1,12 @@
 searchStore.$inject = [];
 
 export default function searchStore() {
-  const fromLang = 'pl';
-  const toLang = 'en';
+  const langFrom = 'en';
+  const langTo = 'pl';
   // -------
   return {
-    getFromLang: () => fromLang,
-    getToLang: () => toLang,
+    getLangFrom: () => langFrom,
+    getLangTo: () => langTo,
   };
   // -------
 }

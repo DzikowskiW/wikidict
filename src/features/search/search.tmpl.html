@@ -8,11 +8,24 @@
 
 <div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
     <div class="padded" md-whiteframe="1"
-         flex-sm="45" flex-gt-sm="35" flex-gt-md="25"
+         flex-sm="45" flex-gt-sm="55" flex-gt-md="35"
          layout layout-align="center center">
-        <md-input-container md-no-float class="md-block">
-            <input  placeholder="Search">
-        </md-input-container>
+            <md-autocomplete
+                    flex="75"
+                    md-selected-item="vm.selectedItem"
+                    md-search-text="vm.searchPhrase"
+                    md-items="item in vm.autocomplete(vm.searchPhrase)"
+                    md-item-text="item.phrase"
+                    md-delay="400"
+                    md-min-length="3"
+                    placeholder="Enter a phrase to translate">
+                <md-item-template>
+                    <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.phrase}}</span>
+                </md-item-template>
+                <md-not-found>
+                    No  matching "{{vm.searchPhrase}}" phrases were found.
+                </md-not-found>
+            </md-autocomplete>
         <md-input-container>
             <md-button class="md-raised md-primary">Search</md-button>
         </md-input-container>

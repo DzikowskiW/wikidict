@@ -15,7 +15,12 @@ export default function wikipediaTranslator($q, searchHintFetcher) {
     const deferred = $q.defer();
     searchHintFetcher.autocomplete(lang, phrase)
     .then((response) => {
-      deferred.resolve(convertFromOpenSearch(response.data));
+      try {
+        const convertedData = convertFromOpenSearch(response.data);
+        deferred.resolve(convertedData);
+      } catch (e) {
+        deferred.reject(e.message);
+      }
     }, (...args) => {
       deferred.reject.apply(this, args);
     });
@@ -23,6 +28,10 @@ export default function wikipediaTranslator($q, searchHintFetcher) {
   }
 
   function convertFromOpenSearch(data) {
+    if (!Array.isArray(data) || data.length < 4 || data[1].length !== data[2].length
+      || data[3].length !== data[2].length) {
+      throw new Error('Invalid OpenSearch argument');
+    }
     const result = [];
     for (let i = 0; i < data[PHRASES].length; i++) {
       result.push({

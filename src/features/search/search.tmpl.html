@@ -16,11 +16,12 @@
                     md-search-text="vm.searchPhrase"
                     md-items="item in vm.autocomplete(vm.searchPhrase)"
                     md-item-text="item.phrase"
+                    md-selected-item-change="vm.search(item.phrase)"
                     md-delay="400"
                     md-min-length="3"
                     placeholder="Enter a phrase to translate">
                 <md-item-template>
-                    <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.phrase}}</span>
+                    <span md-highlight-text="vm.searchPhrase">{{item.phrase}}</span>
                 </md-item-template>
                 <md-not-found>
                     No  matching "{{vm.searchPhrase}}" phrases were found.

@@ -1,4 +1,4 @@
-translationResultFetcher.$injector = ['$http','wdOrigin'];
+translationResultFetcher.$inject = ['$http', 'wdOrigin'];
 
 export default function translationResultFetcher($http, wdOrigin) {
   return {
@@ -7,7 +7,7 @@ export default function translationResultFetcher($http, wdOrigin) {
 
   //------------
 
-  function translate(phrase, langFrom, langTo) {
+  function translate(langFrom, langTo, phrase) {
     if (!(typeof phrase === 'string' || phrase instanceof String) || phrase.length <= 0) {
       throw new Error('Invalid phrase for translationResultFetcher given');
     }
@@ -35,7 +35,4 @@ export default function translationResultFetcher($http, wdOrigin) {
     return `https://${langFrom}.wikipedia.org/w/api.php`;
   }
 
-  function formatResults(wikimediaResults){
-    return '';
-  }
 }

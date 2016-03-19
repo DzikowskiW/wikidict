@@ -16,7 +16,7 @@ describe('App Translator Module', function() {
 
     // TESTS
     it('autocomplete should return properly formatted result ', function (done) {
-      const translator = setupTranslator(['mock',
+      const translator = setupHintFetcherMock(['mock',
         ['mockone'],
         ['mockone Description'],
         ['http://mockone.link'],
@@ -35,7 +35,7 @@ describe('App Translator Module', function() {
     });
 
     it('autocomplete should handle invalid Open Search result', function (done) {
-      const translator = setupTranslator(['invalid result']);
+      const translator = setupHintFetcherMock(['invalid result']);
       const promise = translator.autocomplete('en', 'mock');
       promise.catch(() => {
         done();
@@ -44,8 +44,39 @@ describe('App Translator Module', function() {
       $rootScope.$digest();
     });
 
+    it('search should return properly formatted result ', function (done) {
+      const translator = setupResultFetcherMock({
+        query: {
+          normalized: [{ from: 'dog', to: 'Dog' }],
+          pages: {
+            4269567: {
+              pageid: 4269567,
+              ns: 0,
+              title: 'Dog',
+              langlinks: [{ lang: 'pl', '*': 'Pies domowy' }],
+            },
+          },
+        },
+      });
+      const promise = translator.translate('en', 'pl', 'dog');
+      promise.then(response => {
+        expect(response).to.deep.equal({
+          original: {
+            phrase: 'dog',
+            normalized_phrase: 'Dog',
+          },
+          translation: {
+            phrase: 'Pies domowy',
+          },
+        });
+        done();
+      });
+      // to resolve $q.promises
+      $rootScope.$digest();
+    });
+
     // HELPERS
-    function setupTranslator(returnedData) {
+    function setupHintFetcherMock(returnedData) {
       let translatorService;
       const searchHintFetcherMock = {
         autocomplete: null,
@@ -56,6 +87,27 @@ describe('App Translator Module', function() {
 
       angular.mock.inject(function ($injector, _$rootScope_, $q) {
         searchHintFetcherMock.autocomplete = function() {
+          const deferred = $q.defer();
+          deferred.resolve({ data: returnedData });
+          return deferred.promise;
+        };
+        translatorService = $injector.get('translator');
+        $rootScope = _$rootScope_;
+      });
+      return translatorService;
+    }
+
+    function setupResultFetcherMock(returnedData) {
+      let translatorService;
+      const resultFetcherMock = {
+        translate: null,
+      };
+      angular.mock.module(function ($provide) {
+        $provide.value('translationResultFetcher', resultFetcherMock);
+      });
+
+      angular.mock.inject(function ($injector, _$rootScope_, $q) {
+        resultFetcherMock.translate = function() {
           const deferred = $q.defer();
           deferred.resolve({ data: returnedData });
           return deferred.promise;

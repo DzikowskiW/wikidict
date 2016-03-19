@@ -32,32 +32,32 @@ describe('App Core Module', function() {
     });
 
     it('should throw an exception if the phrase is null, number', function() {
-      expect(() => resultFetcher.translate(null, 'PL', 'EN'))
+      expect(() => resultFetcher.translate('PL', 'EN', null))
         .to.throw(/phrase/);
     });
 
     it('should throw an exception if the phrase is number', function() {
-      expect(() => resultFetcher.translate(12, 'PL', 'EN'))
+      expect(() => resultFetcher.translate('PL', 'EN', 12))
         .to.throw(/phrase/);
     });
 
     it('should throw an exception if the phrase is empty', function() {
-      expect(() => resultFetcher.translate('', 'PL', 'EN'))
+      expect(() => resultFetcher.translate('PL', 'EN', ''))
         .to.throw(/phrase/);
     });
 
     it('should throw an exception if the language FROM is null', function() {
-      expect(() => resultFetcher.translate('pies', null, 'EN'))
+      expect(() => resultFetcher.translate(null, 'EN', 'pies'))
         .to.throw(/ from /);
     });
 
     it('should throw an exception if the language TO is null', function() {
-      expect(() => resultFetcher.translate('pies', 'PL', null))
+      expect(() => resultFetcher.translate('PL', null, 'pies'))
         .to.throw(/ to /);
     });
 
     it('should return promise', function() {
-      const result = resultFetcher.translate('pies', 'PL', 'EN');
+      const result = resultFetcher.translate('PL', 'EN', 'pies');
       expect(result).to.equal(returnedValue);
     });
   });

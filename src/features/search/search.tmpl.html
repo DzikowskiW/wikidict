@@ -7,9 +7,9 @@
 </md-toolbar>
 
 <div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
-    <div class="padded" md-whiteframe="1"
-         flex-sm="45" flex-gt-sm="55" flex-gt-md="35"
-         layout layout-align="center center">
+    <form class="padded" md-whiteframe="1"
+         flex-sm="45" flex-gt-sm="55" flex-gt-md="35" ng-submit="vm.search(vm.searchPhrase)">
+        <div layout layout-align="center center">
             <md-autocomplete
                     flex="75"
                     md-selected-item="vm.selectedItem"
@@ -23,39 +23,40 @@
                 <md-item-template>
                     <span md-highlight-text="vm.searchPhrase">{{item.phrase}}</span>
                 </md-item-template>
-                <md-not-found>
-                    No  matching "{{vm.searchPhrase}}" phrases were found.
-                </md-not-found>
             </md-autocomplete>
-        <md-input-container>
-            <md-button class="md-raised md-primary">Search</md-button>
-        </md-input-container>
-    </div>
+            <md-input-container>
+                <md-button class="md-raised md-primary" type="submit">Search</md-button>
+            </md-input-container>
+        </div>
+        <div layout layout-align="center center">
+            <md-input-container>
+                <label>From</label>
+                <md-select ng-model="vm.langFrom">
+                    <md-option value="en">
+                        English
+                    </md-option>
+                    <md-option value="pl">
+                        Polski
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>To</label>
+                <md-select  ng-model="vm.langTo">
+                    <md-option value="en">
+                        English
+                    </md-option>
+                    <md-option value="pl">
+                        Polski
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </form>
     <ui-view flex-sm="45" flex-gt-sm="55" flex-gt-md="35"
              layout layout-align="center center"></ui-view>
 
 
-    <!--<md-input-container>-->
-        <!--<label>From</label>-->
-        <!--<md-select>-->
-            <!--<md-option value="en">-->
-                <!--English-->
-            <!--</md-option>-->
-            <!--<md-option value="pl">-->
-                <!--Polish-->
-            <!--</md-option>-->
-        <!--</md-select>-->
-    <!--</md-input-container>-->
-    <!--<md-input-container>-->
-        <!--<label>To</label>-->
-        <!--<md-select>-->
-            <!--<md-option value="en">-->
-                <!--English-->
-            <!--</md-option>-->
-            <!--<md-option value="pl">-->
-                <!--Polish-->
-            <!--</md-option>-->
-        <!--</md-select>-->
-    <!--</md-input-container>-->
+
 </div>
 

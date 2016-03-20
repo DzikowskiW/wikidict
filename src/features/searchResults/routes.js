@@ -2,7 +2,7 @@ routes.$inject = ['$stateProvider'];
 
 export default function routes($stateProvider) {
   $stateProvider.state('search.results', {
-    url: '/:phrase',
+    url: '/:langFrom/:langTo/:phrase',
     parent: 'search',
     controller: searchResultsRouteCtrl,
     controllerAs: 'vm',
@@ -12,8 +12,11 @@ export default function routes($stateProvider) {
 
 searchResultsRouteCtrl.$inject = ['$stateParams', 'searchStore', 'translator'];
 function searchResultsRouteCtrl($stateParams, searchStore, translator) {
+  searchStore.langFrom = $stateParams.langFrom;
+  searchStore.langTo = $stateParams.langTo;
   this.phrase = $stateParams.phrase;
-  this.result = translator.translate(searchStore.getLangFrom(),
-    searchStore.getLangTo(),
+  this.result = translator.translate(
+    $stateParams.langFrom,
+    $stateParams.langTo,
     this.phrase);
 }

@@ -1,6 +1,6 @@
-SearchCtrl.$inject = ['$log', 'searchStore', 'translator'];
+SearchCtrl.$inject = ['$log', '$state', 'searchStore', 'translator'];
 
-export default function SearchCtrl($log, searchStore, translator) {
+export default function SearchCtrl($log, $state, searchStore, translator) {
   const vm = this;
   vm.searchPhrase = '';
   // --------
@@ -16,5 +16,8 @@ export default function SearchCtrl($log, searchStore, translator) {
 
   function search(phrase) {
     vm.searchPhrase = phrase;
+    if (phrase && phrase.length > 0) {
+      $state.go('search.results', { phrase });
+    }
   }
 }

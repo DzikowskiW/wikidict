@@ -19,14 +19,14 @@ export default function translationResultFetcher($http, wdOrigin) {
     }
     return $http({
       url: generateUrl(langFrom),
-      method: 'GET',
+      method: 'JSONP',
       params: {
         action: 'query',
-        titles: 'phrase',
+        titles: phrase,
         prop: 'langlinks',
         lllang: langTo,
         format: 'json',
-        origin: wdOrigin,
+        callback: 'JSON_CALLBACK',
       },
     });
   }

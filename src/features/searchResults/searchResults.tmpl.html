@@ -1,58 +1,8 @@
-<md-toolbar>
-    <div class="md-toolbar-tools">
-        <h2>
-            <span>Wiki Dictionary</span>
-        </h2>
-    </div>
-</md-toolbar>
-
 <div layout="column" layout-align="center" layout-padding layout-wrap layout-fill>
-    <h1>Search results</h1><br/>
+    <h3>Search: {{ vm.phrase }}</h3><br/>
 
-    <div  md-whiteframe="1"
-         layout-padding
-         flex-sm="45" flex-gt-sm="35" flex-gt-md="25"
-         layout layout-align="center center">
-        <h3>Result1</h3>
-        <p>Lorem Khaled Ipsum is a major key to success. They don’t want us to eat.</p>
+    <div  md-whiteframe="1" layout="column">
+        <h3>{{ vm.result.translation.phrase }}</h3>
     </div>
-
-    <div layout-padding md-whiteframe="1"
-         flex-sm="45" flex-gt-sm="35" flex-gt-md="25"
-         layout layout-align="center center">
-        <h3>Result2</h3>
-        <p>You do know, you do know that they don’t want you to have lunch. I’m keeping it real with you, so what you going do is have lunch.</p>
-    </div>
-
-    <div layout-padding md-whiteframe="1"
-         flex-sm="45" flex-gt-sm="35" flex-gt-md="25"
-         layout layout-align="center center">
-        <h3>Result3</h3>
-        <p>I’m keeping it real with you, so what you going do is have lunch. Eliptical talk. Put it this way, it took me twenty five years to get these plants, twenty five years of blood sweat and tears, and I’m never giving up</p>
-    </div>
-
-
-    <!--<md-input-container>-->
-    <!--<label>From</label>-->
-    <!--<md-select>-->
-    <!--<md-option value="en">-->
-    <!--English-->
-    <!--</md-option>-->
-    <!--<md-option value="pl">-->
-    <!--Polish-->
-    <!--</md-option>-->
-    <!--</md-select>-->
-    <!--</md-input-container>-->
-    <!--<md-input-container>-->
-    <!--<label>To</label>-->
-    <!--<md-select>-->
-    <!--<md-option value="en">-->
-    <!--English-->
-    <!--</md-option>-->
-    <!--<md-option value="pl">-->
-    <!--Polish-->
-    <!--</md-option>-->
-    <!--</md-select>-->
-    <!--</md-input-container>-->
 </div>
 

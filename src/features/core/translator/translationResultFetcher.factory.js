@@ -23,7 +23,9 @@ export default function translationResultFetcher($http, wdOrigin) {
       params: {
         action: 'query',
         titles: phrase,
-        prop: 'langlinks',
+        prop: 'langlinks|extracts',
+        explaintext:true,
+        exintro: true,
         lllang: langTo,
         format: 'json',
         callback: 'JSON_CALLBACK',

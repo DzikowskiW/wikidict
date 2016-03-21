@@ -6,7 +6,7 @@ export default function routes($stateProvider) {
     parent: 'search',
     controller: searchResultsRouteCtrl,
     controllerAs: 'vm',
-    template: '<wd-search-results phrase="vm.phrase" result="vm.result"></wd-search-results>',
+    template: '<wd-search-results phrase="vm.phrase" result="vm.result" flex></wd-search-results>',
   });
 }
 

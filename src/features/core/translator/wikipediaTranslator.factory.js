@@ -74,7 +74,11 @@ export default function wikipediaTranslator($q, searchHintFetcher, translationRe
       const pageKey = Object.keys(data.query.pages);
       const translationData = data.query.pages[pageKey];
       result.original.normalized_phrase = translationData.title;
+      result.original.desc = translationData.extract;
       result.translation.phrase = translationData.langlinks[0]['*'];
+      if (translationData.thumbnail) {
+        result.original.thumbnail = translationData.thumbnail.source;
+      }
     }
     return result;
   }

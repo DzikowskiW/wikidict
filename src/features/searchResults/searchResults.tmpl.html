@@ -1,8 +1,35 @@
-<div layout="column" layout-align="center" layout-padding layout-wrap layout-fill>
-    <h3>Search: {{ vm.phrase }}</h3><br/>
+<div layout="column" layout-align="center" flex>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{ vm.result.original.phrase }}</span>
+                <span class="md-subhead">{{ vm.result.original.desc }}</span>
+            </md-card-title-text>
+            <md-card-title-media>
+                <div class="md-media-sm card-media"></div>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button>Copy</md-button>
+            <md-button>Open in Wikipedia</md-button>
+        </md-card-actions>
+    </md-card>
+    <h3 class="md-headline">Translations:</h3>
 
-    <div  md-whiteframe="1" layout="column">
-        <h3>{{ vm.result.translation.phrase }}</h3>
-    </div>
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{ vm.result.translation.phrase }}</span>
+                <span class="md-subhead">Small</span>
+            </md-card-title-text>
+            <md-card-title-media>
+                <div class="md-media-sm card-media"></div>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button>Copy</md-button>
+            <md-button>Open in Wikipedia</md-button>
+        </md-card-actions>
+    </md-card>
 </div>
 

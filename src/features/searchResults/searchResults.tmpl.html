@@ -6,12 +6,13 @@
                 <span class="md-subhead">{{ vm.result.original.desc }}</span>
             </md-card-title-text>
             <md-card-title-media>
-                <div class="md-media-sm card-media"></div>
+                <div class="md-media-lg card-media">
+                    <img ng-src="{{ vm.result.original.thumbnail }}" />
+                </div>
             </md-card-title-media>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button>Copy</md-button>
-            <md-button>Open in Wikipedia</md-button>
+            <md-button href="{{ vm.result.original.url }}" target="_blank">Open in Wikipedia</md-button>
         </md-card-actions>
     </md-card>
     <h3 class="md-headline">Translations:</h3>
@@ -20,7 +21,10 @@
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">{{ vm.result.translation.phrase }}</span>
-                <span class="md-subhead">Small</span>
+                <span class="md-subhead">
+                    {{ vm.result.translation.langname }}
+                    ({{ vm.result.translation.autonym }})
+                </span>
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-sm card-media"></div>
@@ -28,7 +32,7 @@
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
             <md-button>Copy</md-button>
-            <md-button>Open in Wikipedia</md-button>
+            <md-button href="{{ vm.result.translation.url }}" target="_blank">Open in Wikipedia</md-button>
         </md-card-actions>
     </md-card>
 </div>

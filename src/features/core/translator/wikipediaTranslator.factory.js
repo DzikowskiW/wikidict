@@ -75,10 +75,14 @@ export default function wikipediaTranslator($q, searchHintFetcher, translationRe
       const translationData = data.query.pages[pageKey];
       result.original.normalized_phrase = translationData.title;
       result.original.desc = translationData.extract;
-      result.translation.phrase = translationData.langlinks[0]['*'];
+      result.original.url = translationData.fullurl;
       if (translationData.thumbnail) {
         result.original.thumbnail = translationData.thumbnail.source;
       }
+      result.translation.phrase = translationData.langlinks[0]['*'];
+      result.translation.langname = translationData.langlinks[0].langname;
+      result.translation.url = translationData.langlinks[0].url;
+      result.translation.autonym = translationData.langlinks[0].autonym;
     }
     return result;
   }

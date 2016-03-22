@@ -23,8 +23,11 @@ export default function translationResultFetcher($http, wdOrigin) {
       params: {
         action: 'query',
         titles: phrase,
-        prop: 'langlinks|extracts|pageimages',
-        explaintext:true,
+        prop: 'langlinks|extracts|pageimages|info',
+        inprop: 'url', // url to original article,
+        pithumbsize: 200, // thumb size
+        llprop: 'url|langname|autonym',
+        explaintext: true,
         exintro: true,
         lllang: langTo,
         format: 'json',

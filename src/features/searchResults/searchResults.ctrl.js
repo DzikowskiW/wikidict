@@ -1,6 +1,8 @@
-SearchResultsCtrl.$inject = [];
-export default function SearchResultsCtrl() {
+SearchResultsCtrl.$inject = ['$mdToast'];
+export default function SearchResultsCtrl($mdToast) {
   const vm = this;
+  vm.showCopyConfirmation = showCopyConfirmation;
+
   init();
 
   // ----------
@@ -9,4 +11,8 @@ export default function SearchResultsCtrl() {
       vm.result = result;
     });
   }
-};
+
+  function showCopyConfirmation(phrase) {
+    $mdToast.showSimple(`Copied: ${phrase}`);
+  }
+}

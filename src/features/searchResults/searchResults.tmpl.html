@@ -3,7 +3,7 @@
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">{{ vm.result.original.phrase }}</span>
-                <span class="md-subhead">{{ vm.result.original.desc }}</span>
+                <span class="md-subhead">{{ vm.result.original.desc| limitTo: 200 }}</span>
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-lg card-media">
@@ -15,8 +15,6 @@
             <md-button href="{{ vm.result.original.url }}" target="_blank">Open in Wikipedia</md-button>
         </md-card-actions>
     </md-card>
-    <h3 class="md-headline">Translations:</h3>
-
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -31,7 +29,11 @@
             </md-card-title-media>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button>Copy</md-button>
+            <md-button ngclipboard
+                ng-click="vm.showCopyConfirmation(vm.result.translation.phrase)"
+                data-clipboard-text="{{ vm.result.translation.phrase }}">
+                Copy
+            </md-button>
             <md-button href="{{ vm.result.translation.url }}" target="_blank">Open in Wikipedia</md-button>
         </md-card-actions>
     </md-card>

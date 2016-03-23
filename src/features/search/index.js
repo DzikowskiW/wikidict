@@ -1,4 +1,5 @@
 import 'flag-icon-css/css/flag-icon.css';
+import 'font-awesome/css/font-awesome.css';
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 

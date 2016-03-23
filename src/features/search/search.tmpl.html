@@ -1,17 +1,37 @@
-<md-toolbar>
+<md-toolbar class="jumbo">
     <div class="md-toolbar-tools">
-        <h2>
-            <span class="logoFont">Wiki Dictionary</span>
+        <h2 flex layout layout-align="center center">
+            <span class="logoFont big">Wiki Dictionary</span>
         </h2>
     </div>
-</md-toolbar>
-
-<div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
-    <form class="padded" md-whiteframe="1"
-         flex-sm="45" flex-gt-sm="55" flex-gt-md="35" ng-submit="vm.search(vm.searchPhrase)">
+    <form  ng-submit="vm.search(vm.searchPhrase)">
         <div layout layout-align="center center">
+            <div layout layout-align="center center">
+                <md-input-container>
+                    <label>From</label>
+                    <md-select ng-model="vm.langFrom">
+                        <md-option value="en">
+                            <span class="flag-icon flag-icon-gb"></span>
+                        </md-option>
+                        <md-option value="pl">
+                            <span class="flag-icon flag-icon-pl"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>To</label>
+                    <md-select  ng-model="vm.langTo">
+                        <md-option value="en">
+                            <span class="flag-icon flag-icon-gb"></span>
+                        </md-option>
+                        <md-option value="pl">
+                            <span class="flag-icon flag-icon-pl"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
             <md-autocomplete
-                    flex="75"
+                    flex="50"
                     md-selected-item="vm.selectedItem"
                     md-search-text="vm.searchPhrase"
                     md-items="item in vm.autocomplete(vm.searchPhrase)"
@@ -25,34 +45,13 @@
                 </md-item-template>
             </md-autocomplete>
             <md-input-container>
-                <md-button class="md-raised md-primary" type="submit">Search</md-button>
-            </md-input-container>
-        </div>
-        <div layout layout-align="center center">
-            <md-input-container>
-                <label>From</label>
-                <md-select ng-model="vm.langFrom">
-                    <md-option value="en">
-                        English
-                    </md-option>
-                    <md-option value="pl">
-                        Polski
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container>
-                <label>To</label>
-                <md-select  ng-model="vm.langTo">
-                    <md-option value="en">
-                        English
-                    </md-option>
-                    <md-option value="pl">
-                        Polski
-                    </md-option>
-                </md-select>
+                <md-button class="md-raised md-primary md-accent" type="submit">Search</md-button>
             </md-input-container>
         </div>
     </form>
+</md-toolbar>
+
+<div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
     <ui-view flex-sm="45" flex-gt-sm="55" flex-gt-md="35"
              layout layout-align="center center"></ui-view>
 

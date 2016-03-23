@@ -1,3 +1,4 @@
+import 'flag-icon-css/css/flag-icon.css';
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 

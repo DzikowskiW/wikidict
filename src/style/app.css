@@ -25,3 +25,12 @@ md-icon.s32 span {
 .logoFont {
     font-family: 'Bree Serif', serif;
 }
+
+.logoFont.big {
+    font-size: 42px;
+}
+
+md-toolbar.jumbo {
+    height: 200px;
+}
+

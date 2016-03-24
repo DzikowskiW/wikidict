@@ -81,6 +81,7 @@ export default function wikipediaTranslator($q, searchHintFetcher, translationRe
       }
       result.translation.phrase = translationData.langlinks[0]['*'];
       result.translation.langname = translationData.langlinks[0].langname;
+      result.translation.langcode = translationData.langlinks[0].lang;
       result.translation.url = translationData.langlinks[0].url;
       result.translation.autonym = translationData.langlinks[0].autonym;
     }

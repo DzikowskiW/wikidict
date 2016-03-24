@@ -1,9 +1,29 @@
-<div layout="column" layout-align="center" flex>
+<div layout="column" layout-align="center center" ng-if="vm.state ==='loading'">
+    <md-progress-circular md-mode="indeterminate" md-diameter="100"></md-progress-circular>
+</div>
+<div layout="column" layout-align="center" flex ng-if="vm.state === 'notFound'">
+    <md-card class="alert">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">
+                    <i class="fa fa-exclamation-circle"></i>
+                    Translation not found :(
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+    </md-card>
+</div>
+
+<div layout="column" layout-align="center" flex ng-if="vm.state === 'ok'">
     <md-card>
         <md-card-title>
             <md-card-title-text>
-                <span class="md-headline">{{ vm.result.original.phrase }}</span>
-                <span class="md-subhead">{{ vm.result.original.desc| limitTo: 200 }}</span>
+                <span class="md-headline">{{ vm.result.translation.phrase }}</span>
+                <span class="md-subhead">
+                    <span class="flag-icon" ng-class="'flag-icon-' + vm.result.translation.langcode"></span>
+                    {{ vm.result.translation.langname }}
+                    ({{ vm.result.translation.autonym }})
+                </span>
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-lg card-media">
@@ -12,29 +32,14 @@
             </md-card-title-media>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button href="{{ vm.result.original.url }}" target="_blank">Open in Wikipedia</md-button>
-        </md-card-actions>
-    </md-card>
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">{{ vm.result.translation.phrase }}</span>
-                <span class="md-subhead">
-                    {{ vm.result.translation.langname }}
-                    ({{ vm.result.translation.autonym }})
-                </span>
-            </md-card-title-text>
-            <md-card-title-media>
-                <div class="md-media-sm card-media"></div>
-            </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
             <md-button ngclipboard
                 ng-click="vm.showCopyConfirmation(vm.result.translation.phrase)"
                 data-clipboard-text="{{ vm.result.translation.phrase }}">
-                Copy
+                <i class="fa fa-clone"></i> Copy
             </md-button>
-            <md-button href="{{ vm.result.translation.url }}" target="_blank">Open in Wikipedia</md-button>
+            <md-button href="{{ vm.result.translation.url }}" target="_blank">
+                Open in <i class="fa fa-wikipedia-w"></i>
+            </md-button>
         </md-card-actions>
     </md-card>
 </div>

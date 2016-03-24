@@ -3,6 +3,7 @@ import 'font-awesome/css/font-awesome.css';
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 
+import './search.css';
 import appCore from '../core';
 
 import searchComponent from './search.component';

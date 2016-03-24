@@ -4,7 +4,7 @@
             <span class="logoFont big">Wiki Dictionary</span>
         </h2>
     </div>
-    <form  ng-submit="vm.search(vm.searchPhrase)">
+    <form  ng-submit="vm.search(vm.searchPhrase)" >
         <div layout layout-align="center center">
             <div layout layout-align="center center">
                 <md-input-container>
@@ -49,6 +49,13 @@
                     <i class="fa fa-search"></i> Search
                 </md-button>
             </md-input-container>
+        </div>
+        <div layout layout-align="center center">
+            <div flex="75" class="originalDesc"
+                 layout-align="center center">
+                <span md-highlight-text="vm.searchPhrase">{{ vm.desc }}</span>
+            </div>
+
         </div>
     </form>
 </md-toolbar>

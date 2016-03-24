@@ -28,9 +28,11 @@ md-icon.s32 span {
 
 .logoFont.big {
     font-size: 42px;
+    text-shadow: 1px 1px #01579b;
 }
 
-md-toolbar.jumbo {
-    height: 200px;
+md-card.alert {
+    background: #FF6F00;
+    color: #fff;
 }
 

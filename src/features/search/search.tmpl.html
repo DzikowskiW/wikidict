@@ -1,35 +1,15 @@
 <md-toolbar class="jumbo">
     <div class="md-toolbar-tools">
         <h2 flex layout layout-align="center center">
-            <span class="logoFont big">Wiki Dictionary</span>
+            <span class="logoFont big">
+                <i class="fa fa-comments-o"></i>
+                Wiki Dictionary
+            </span>
         </h2>
     </div>
     <form  ng-submit="vm.search(vm.searchPhrase)" >
         <div layout layout-align="center center">
-            <div layout layout-align="center center">
-                <md-input-container>
-                    <label>From</label>
-                    <md-select ng-model="vm.langFrom">
-                        <md-option value="en">
-                            <span class="flag-icon flag-icon-gb"></span>
-                        </md-option>
-                        <md-option value="pl">
-                            <span class="flag-icon flag-icon-pl"></span>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container>
-                    <label>To</label>
-                    <md-select  ng-model="vm.langTo">
-                        <md-option value="en">
-                            <span class="flag-icon flag-icon-gb"></span>
-                        </md-option>
-                        <md-option value="pl">
-                            <span class="flag-icon flag-icon-pl"></span>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-            </div>
+            <wd-language-selector></wd-language-selector>
             <md-autocomplete
                     flex="50"
                     md-selected-item="vm.selectedItem"
@@ -63,8 +43,5 @@
 <div layout="row" layout-align="center" layout-padding layout-wrap layout-fill>
     <ui-view flex-sm="45" flex-gt-sm="55" flex-gt-md="35"
              layout layout-align="center center"></ui-view>
-
-
-
 </div>
 

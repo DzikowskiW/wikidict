@@ -1,0 +1,12 @@
+.languageSelector .md-select-value .md-select-icon {
+    display:none;
+}
+
+.languageSelector .md-text .langName {
+    display:none;
+}
+
+.languageSelector .md-select-value {
+    min-width:30px;
+    border-bottom: none;
+}

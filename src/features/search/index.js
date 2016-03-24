@@ -6,10 +6,12 @@ import uiRouter from 'angular-ui-router';
 import './search.css';
 import appCore from '../core';
 
+import languageSelector from './languageSelector.directive';
 import searchComponent from './search.component';
 import routes from './routes';
 
 export default angular.module('wikidict.search', [uiRouter, appCore])
+  .directive('wdLanguageSelector', languageSelector)
   .component('wdSearch', searchComponent)
   .config(routes)
   .name;

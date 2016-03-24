@@ -11,7 +11,6 @@ export default function SearchCtrl($log, $state, searchStore, translator) {
   vm.search = search;
   // --------
   function autocomplete(phrase) {
-    console.log('autocompleting '+phrase);
     if (!phrase || phrase.length <= 2) {
       return null;
     }

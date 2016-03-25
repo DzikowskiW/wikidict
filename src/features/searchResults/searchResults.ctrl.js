@@ -7,8 +7,9 @@ export default function SearchResultsCtrl($mdToast) {
 
   // ----------
   function init() {
+    console.log(vm);
     vm.state = 'loading';
-    vm.resultPromise
+    vm.resultsPromise
       .then(result => {
         if (result.translation.phrase) {
           vm.state = 'ok';

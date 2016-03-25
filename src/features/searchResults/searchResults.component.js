@@ -6,7 +6,7 @@ const searchResultsComponent = {
   controllerAs: 'vm',
   bindings: {
     phrase: '<',
-    resultPromise: '<result',
+    resultsPromise: '<',
   },
 };
 

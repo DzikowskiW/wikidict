@@ -1,0 +1,41 @@
+<md-toolbar class="jumbo">
+    <div class="md-toolbar-tools">
+        <h2 flex layout layout-align="center center">
+            <span class="logoFont big">
+                <i class="fa fa-comments-o"></i>
+                Wiki Dictionary
+            </span>
+        </h2>
+    </div>
+    <form  ng-submit="vm.search(vm.searchPhrase)" >
+        <div layout layout-align="center center">
+            <wd-language-selector lang-from="vm.langFrom" lang-to="vm.langTo"></wd-language-selector>
+            <md-autocomplete
+                    flex="50"
+                    md-selected-item="vm.selectedItem"
+                    md-search-text="vm.searchPhrase"
+                    md-items="item in vm.autocomplete(vm.searchPhrase)"
+                    md-item-text="item.phrase"
+                    md-selected-item-change="vm.search(item.phrase)"
+                    md-delay="400"
+                    md-min-length="3"
+                    placeholder="Enter a phrase to translate">
+                <md-item-template>
+                    <span md-highlight-text="vm.searchPhrase">{{item.phrase}}</span>
+                </md-item-template>
+            </md-autocomplete>
+            <md-input-container>
+                <md-button class="md-raised md-primary md-accent" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </md-button>
+            </md-input-container>
+        </div>
+        <div layout layout-align="center center">
+            <div flex="75" class="originalDesc"
+                 layout-align="center center">
+                <span md-highlight-text="vm.searchPhrase">{{ vm.desc }}</span>
+            </div>
+
+        </div>
+    </form>
+</md-toolbar>

@@ -1,15 +1,29 @@
-SearchCtrl.$inject = ['$log', '$state', 'searchStore', 'translator'];
+SearchCtrl.$inject = ['$scope', '$log', '$state', 'searchStore', 'translator'];
 
-export default function SearchCtrl($log, $state, searchStore, translator) {
+export default function SearchCtrl($scope, $log, $state, searchStore, translator) {
   const vm = this;
-  vm.searchPhrase = '';
-  vm.langFrom = searchStore.getLangFrom();
-  vm.langTo = searchStore.getLangTo();
+  vm.langTo = vm.langTo || '';
+  vm.langFrom = vm.langFrom || '';
+  vm.searchPhrase = vm.searchPhrase || '';
   vm.desc = '';
+
   // --------
   vm.autocomplete = autocomplete;
   vm.search = search;
+  init();
+
   // --------
+  function init() {
+    $scope.$watch(() => searchStore.getPhrase(),
+      (newVal) => {
+        vm.searchPhrase = newVal;
+        setDescription(vm.searchPhrase);
+      });
+    if (vm.searchPhrase.length > 0) {
+      setDescription(vm.searchPhrase);
+    }
+  }
+
   function autocomplete(phrase) {
     if (!phrase || phrase.length <= 2) {
       return null;

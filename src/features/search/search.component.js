@@ -1,8 +1,11 @@
-import SearchCtrl from './search.ctrl';
-
 const searchComponent = {
   template: require('./search.tmpl.html'),
-  controller: SearchCtrl,
+  bindings: {
+    langFrom: '<',
+    langTo: '<',
+    searchPhrase: '<',
+    searchResultsPromise: '<',
+  },
   controllerAs: 'vm',
 };
 

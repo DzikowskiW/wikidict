@@ -7,7 +7,6 @@ export default function SearchResultsCtrl($mdToast) {
 
   // ----------
   function init() {
-    console.log(vm);
     vm.state = 'loading';
     vm.resultsPromise
       .then(result => {

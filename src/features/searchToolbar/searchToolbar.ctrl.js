@@ -17,7 +17,9 @@ export default function SearchCtrl($scope, $log, $state, searchStore, translator
     $scope.$watch(() => searchStore.getPhrase(),
       (newVal) => {
         vm.searchPhrase = newVal;
-        setDescription(vm.searchPhrase);
+        if (newVal && newVal.length){
+          setDescription(vm.searchPhrase);
+        }
       });
     if (vm.searchPhrase.length > 0) {
       setDescription(vm.searchPhrase);

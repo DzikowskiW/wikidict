@@ -23,7 +23,10 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <i class="fa fa-exchange"></i>
+    <md-button class="md-icon-button"
+        ng-click="vm.switchLanguages()">
+        <i class="fa fa-exchange"></i>
+    </md-button>
     <md-input-container>
         <md-select  ng-model="vm.langTo" aria-label="Language To">
             <md-option value="en">

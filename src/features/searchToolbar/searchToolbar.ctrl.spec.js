@@ -3,19 +3,18 @@
 
 import { expect } from 'chai';
 
-import searchModule from './index';
+import searchToolbarModule from './index';
 
-describe('Search: SearchCtrl', function() {
+describe('Search Toolbar: SearchCtrl', function() {
   // MOCKS AND GLOBALS
   let searchCtrl;
 
   // SETUP
   beforeEach(() => {
-    angular.mock.module(searchModule);
+    angular.mock.module(searchToolbarModule);
     angular.mock.inject(($injector, $componentController, $rootScope) => {
-      searchCtrl = $componentController('wdSearch', { $scope: $rootScope.$new() });
+      searchCtrl = $componentController('wdSearchToolbar', { $scope: $rootScope.$new() });
     });
-
   });
 
   // TESTS

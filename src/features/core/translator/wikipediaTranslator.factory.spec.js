@@ -44,7 +44,7 @@ describe('App Translator Module', function() {
       $rootScope.$digest();
     });
 
-    it('search should return properly formatted result ', function (done) {
+    xit('search should return properly formatted result ', function (done) {
       const translator = setupResultFetcherMock({
         query: {
           normalized: [{ from: 'dog', to: 'Dog' }],

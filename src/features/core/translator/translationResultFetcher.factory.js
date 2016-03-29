@@ -23,7 +23,9 @@ export default function translationResultFetcher($http, wdOrigin) {
       params: {
         action: 'query',
         titles: phrase,
-        prop: 'langlinks|extracts|pageimages|info|categories',
+        prop: 'langlinks|extracts|pageimages|info|categories|pageprops',
+        redirects: true,
+        ppprop: 'disambiguation',
         inprop: 'url', // url to original article,
         pithumbsize: 200, // thumb size
         llprop: 'url|langname|autonym',

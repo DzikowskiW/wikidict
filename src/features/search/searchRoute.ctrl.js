@@ -1,10 +1,9 @@
-SearchRouteCtrl.$inject = ['$stateParams', 'searchStore'];
+SearchRouteCtrl.$inject = ['$scope'];
 
-export default function SearchRouteCtrl($stateParams, searchStore) {
-  const vm = this;
-  vm.langFrom = $stateParams.langFrom;
-  vm.langTo = $stateParams.langTo;
-  searchStore.setLangFrom(vm.langFrom);
-  searchStore.setLangTo(vm.langTo);
-  vm.phrase = $stateParams.phrase || '';
+export default function SearchRouteCtrl($scope) {
+  $scope.Model = {
+    langFrom: '',
+    langTo: '',
+    phrase: '',
+  };
 }

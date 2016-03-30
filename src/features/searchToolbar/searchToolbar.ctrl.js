@@ -2,11 +2,10 @@ SearchCtrl.$inject = ['$scope', '$log', '$state', 'searchStore', 'translator'];
 
 export default function SearchCtrl($scope, $log, $state, searchStore, translator) {
   const vm = this;
-  vm.langTo = vm.langTo || '';
-  vm.langFrom = vm.langFrom || '';
-  vm.searchPhrase = vm.searchPhrase || '';
+   vm.langTo = vm.langTo || '';
+   vm.langFrom = vm.langFrom || '';
+   vm.searchPhrase = vm.langSearch || '';
   vm.desc = '';
-
   // --------
   vm.autocomplete = autocomplete;
   vm.search = search;
@@ -14,11 +13,13 @@ export default function SearchCtrl($scope, $log, $state, searchStore, translator
 
   // --------
   function init() {
-    $scope.$watch(() => searchStore.getPhrase(),
+    $scope.$watch(() => vm.searchPhrase,
       (newVal) => {
-        vm.searchPhrase = newVal;
-        if (newVal && newVal.length){
-          setDescription(vm.searchPhrase);
+        if (newVal){
+          vm.searchPhrase = newVal;
+          if (newVal && newVal.length){
+            setDescription(vm.searchPhrase);
+          }
         }
       });
     if (vm.searchPhrase.length > 0) {
@@ -40,7 +41,7 @@ export default function SearchCtrl($scope, $log, $state, searchStore, translator
     vm.searchPhrase = phrase;
     setDescription(phrase, desc);
     if (phrase && phrase.length > 0) {
-      $state.go('search.results', { phrase, langTo: vm.langTo, langFrom: vm.langFrom });
+      $state.go('search.languages.results', { phrase, langTo: vm.langTo, langFrom: vm.langFrom });
     }
   }
 

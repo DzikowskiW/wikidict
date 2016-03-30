@@ -1,12 +1,11 @@
 <md-content>
     <wd-search-toolbar
-            lang-from="vm.langFrom"
-            lang-to="vm.langTo">
+            lang-from="Model.langFrom"
+            lang-to="Model.langTo"
+            search-phrase="Model.phrase">
     </wd-search-toolbar>
-
-    <div ui-view="main"
+    <div ui-view
          layout="row" layout-align="center"
          layout-padding layout-wrap layout-fill>
     </div>
-
 </md-content>

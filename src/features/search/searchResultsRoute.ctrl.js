@@ -1,10 +1,7 @@
-SearchResultsRouteCtrl.$inject = ['$stateParams', 'searchStore', 'translator'];
+SearchResultsRouteCtrl.$inject = ['$stateParams', '$scope', 'translator'];
 
-export default function SearchResultsRouteCtrl($stateParams, searchStore, translator) {
-  const vm = this;
-  vm.langFrom = searchStore.getLangFrom();
-  vm.langTo = searchStore.getLangTo();
-  vm.phrase = $stateParams.phrase;
-  searchStore.setPhrase(vm.phrase);
-  vm.resultsPromise = (vm.phrase) ? translator.translate(vm.langFrom, vm.langTo, vm.phrase) : null;
+export default function SearchResultsRouteCtrl($stateParams, $scope, translator) {
+  $scope.Model.phrase = $stateParams.phrase;
+  $scope.Model.resultsPromise = ($scope.Model.phrase) ?
+    translator.translate($scope.Model.langFrom, $scope.Model.langTo, $scope.Model.phrase) : null;
 }

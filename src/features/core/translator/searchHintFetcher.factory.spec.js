@@ -33,7 +33,7 @@ describe('App Translator Module', function() {
       expect(hintFetcher).to.respondTo('autocomplete');
     });
 
-    it('utocomplete should return promise', function () {
+    it('autocomplete should return promise', function () {
       const response = hintFetcher.autocomplete('en', 'phrase');
       expect(response).to.respondTo('then');
     });

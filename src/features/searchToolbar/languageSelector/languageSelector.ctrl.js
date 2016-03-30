@@ -1,6 +1,6 @@
-LanguageSelectorCtrl.$inject = ['$scope'];
+LanguageSelectorCtrl.$inject = ['$scope', '$state'];
 
-export default function LanguageSelectorCtrl($scope) {
+export default function LanguageSelectorCtrl($scope, $state) {
   const vm = this;
 
   vm.switchLanguages = switchLanguages;

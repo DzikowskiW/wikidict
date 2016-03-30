@@ -24,6 +24,17 @@
                     {{ vm.result.translation.langname }}
                     ({{ vm.result.translation.autonym }})
                 </span>
+                <md-chips ng-model="vm.result.translation.related" readonly="true">
+                    <md-chip-template>
+                        <span ngclipboard ng-click="vm.showCopyConfirmation($chip.title)"
+                              data-clipboard-text="{{ $chip.title }}">
+                          <i class="fa fa-clone"></i> {{$chip.title}}
+                        </span>
+                    </md-chip-template>
+                    <button md-chip-remove class="md-primary vegetablechip">
+                        <md-icon md-svg-icon="md-close"></md-icon>
+                    </button>
+                </md-chips>
             </md-card-title-text>
             <md-card-title-media>
                 <div class="md-media-lg card-media">

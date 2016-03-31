@@ -1,14 +1,15 @@
 wikipediaTranslator.$inject = ['$q', 'searchHintFetcher',
-  'translationResultFetcher', 'relatedPhrasesFetcher'];
+  'translationResultFetcher', 'relatedPhrasesFetcher', 'disambiguationFetcher'];
 
 export default function wikipediaTranslator($q, searchHintFetcher,
-                          translationResultFetcher, relatedPhrasesFetcher) {
+               translationResultFetcher, relatedPhrasesFetcher, disambiguationFetcher) {
   const PHRASES = 1;
   const PHRASE_DESCRIPTIONS = 2;
   const PHRASE_LINKS = 3;
 
   return {
     autocomplete,
+    similarTo,
     translate,
   };
 
@@ -38,17 +39,26 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       .then((response) => {
         try {
           convertedData = convertWikipediaResponse(phrase, response.data);
+          //disambiguation
+          if (convertedData.disambiguation) {
+            similarTo(langFrom, phrase)
+              .then(result => {
+                convertedData.disambiguation = result;
+                deferred.resolve(convertedData);
+              });
+          } else {
+            // fetching related phrases
+            fetchRelatedPhrases(langTo, convertedData.translation.phrase)
+            .then(relatedPhrases => {
+              convertedData.translation.related = relatedPhrases;
+              deferred.resolve(convertedData);
+            }, (...args) => {
+              deferred.reject.apply(this, args);
+            });
+          }
         } catch (e) {
           deferred.reject(e.message);
         }
-        return fetchRelatedPhrases(langTo, convertedData.translation.phrase);
-      }, (...args) => {
-        deferred.reject.apply(this, args);
-      })
-      // fetching related phrases
-      .then(relatedPhrases => {
-        convertedData.translation.related = relatedPhrases;
-        deferred.resolve(convertedData);
       }, (...args) => {
         deferred.reject.apply(this, args);
       });
@@ -61,6 +71,22 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       .then((response) => {
         try {
           const convertedData = convertRelatedData(response.data);
+          deferred.resolve(convertedData);
+        } catch (e) {
+          deferred.reject(e.message);
+        }
+      }, (...args) => {
+        deferred.reject.apply(this, args);
+      });
+    return deferred.promise;
+  }
+
+  function similarTo(lang, phrase){
+    const deferred = $q.defer();
+    disambiguationFetcher.similarTo(lang, phrase)
+      .then((response) => {
+        try {
+          const convertedData = convertDisambiguationData(response.data);
           deferred.resolve(convertedData);
         } catch (e) {
           deferred.reject(e.message);
@@ -97,7 +123,8 @@ export default function wikipediaTranslator($q, searchHintFetcher,
 
     if (data && data.query && data.query.pages
       && Object.keys(data.query.pages).length === 1
-      && Object.keys(data.query.pages)[0] >= 0) {
+      && Object.keys(data.query.pages)[0] >= 0)
+    {
       const pageKey = Object.keys(data.query.pages);
       const translationData = data.query.pages[pageKey];
       result.original.normalized_phrase = translationData.title;
@@ -105,6 +132,10 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       result.original.url = translationData.fullurl;
       if (translationData.thumbnail) {
         result.original.thumbnail = translationData.thumbnail.source;
+      }
+      if (translationData.pageprops
+        && typeof translationData.pageprops.disambiguation === 'string') {
+        result.disambiguation = true;
       }
       result.translation.phrase = translationData.langlinks[0]['*'];
       result.translation.langname = translationData.langlinks[0].langname;
@@ -125,6 +156,20 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       if (redirects) {
         result = redirects.map(el => { return { title: el.title }; });
       }
+    }
+    return result;
+  }
+
+  function convertDisambiguationData(data) {
+    let result = [];
+    if (data && data.query && data.query.pages
+      && Object.keys(data.query.pages).length > 1) {
+      result = Object.keys(data.query.pages).map(pageKey => {
+        return {
+          title: data.query.pages[pageKey].title,
+          pageId: data.query.pages[pageKey].pageid,
+        };
+      });
     }
     return result;
   }

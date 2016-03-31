@@ -2,7 +2,7 @@ SearchResultsCtrl.$inject = ['$mdToast'];
 export default function SearchResultsCtrl($mdToast) {
   const vm = this;
   vm.showCopyConfirmation = showCopyConfirmation;
-  vm.state = 'loading'; // loading, notFound, ok
+  vm.state = 'loading'; // loading, notFound, result, disambiguation
   init();
 
   // ----------
@@ -10,8 +10,10 @@ export default function SearchResultsCtrl($mdToast) {
     vm.state = 'loading';
     vm.resultsPromise
       .then(result => {
-        if (result.translation.phrase) {
-          vm.state = 'ok';
+        if (result.disambiguation) {
+          vm.state = 'disambiguation';
+        } else if (result.translation.phrase) {
+          vm.state = 'result';
         } else {
           vm.state = 'notFound';
         }

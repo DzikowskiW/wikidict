@@ -2,6 +2,7 @@ SearchResultsCtrl.$inject = ['$mdToast'];
 export default function SearchResultsCtrl($mdToast) {
   const vm = this;
   vm.showCopyConfirmation = showCopyConfirmation;
+  vm.getFlagIconClass = getFlagIconClass;
   vm.state = 'loading'; // loading, notFound, result, disambiguation
   init();
 
@@ -26,5 +27,10 @@ export default function SearchResultsCtrl($mdToast) {
 
   function showCopyConfirmation(phrase) {
     $mdToast.showSimple(`Copied: ${phrase}`);
+  }
+
+  function getFlagIconClass(langCode) {
+    const code = langCode === 'en' ? 'gb' : langCode;
+    return `flag-icon-${code}`;
   }
 }

@@ -1,0 +1,7 @@
+md-card.original-summary {
+    color: rgba(0,0,0,0.54);
+}
+
+md-card.original-summary .highlight {
+    font-weight: bold;
+}

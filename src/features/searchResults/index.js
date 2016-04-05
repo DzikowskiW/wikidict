@@ -1,3 +1,5 @@
+import './searchResults.css';
+
 import angular from 'angular';
 import ngClipboard from 'ngclipboard';
 import mdAngular from 'angular-material';

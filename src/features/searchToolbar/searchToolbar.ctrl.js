@@ -13,18 +13,13 @@ export default function SearchCtrl($scope, $log, $state, searchStore, translator
 
   // --------
   function init() {
-    $scope.$watch(() => vm.searchPhrase,
-      (newVal) => {
-        if (newVal){
+    $scope.$watch(
+      () => vm.searchPhrase,
+      newVal => {
+        if (newVal) {
           vm.searchPhrase = newVal;
-          if (newVal && newVal.length){
-            setDescription(vm.searchPhrase);
-          }
         }
       });
-    if (vm.searchPhrase.length > 0) {
-      setDescription(vm.searchPhrase);
-    }
   }
 
   function autocomplete(phrase) {
@@ -39,21 +34,8 @@ export default function SearchCtrl($scope, $log, $state, searchStore, translator
       return;
     }
     vm.searchPhrase = phrase;
-    setDescription(phrase, desc);
     if (phrase && phrase.length > 0) {
       $state.go('search.languages.results', { phrase, langTo: vm.langTo, langFrom: vm.langFrom });
-    }
-  }
-
-  function setDescription(phrase, desc) {
-    if (!desc) {
-      vm.desc = '';
-      translator.autocomplete(vm.langFrom, phrase)
-        .then((result) => {
-          vm.desc = result[0].description;
-        });
-    } else {
-      vm.desc = desc;
     }
   }
 }

@@ -38,7 +38,7 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       // translating
       .then((response) => {
         try {
-          convertedData = convertWikipediaResponse(phrase, response.data);
+          convertedData = convertWikipediaResponse(langFrom, phrase, response.data);
           //disambiguation
           if (convertedData.disambiguation) {
             similarTo(langFrom, phrase)
@@ -47,8 +47,12 @@ export default function wikipediaTranslator($q, searchHintFetcher,
                 deferred.resolve(convertedData);
               });
           } else {
-            // fetching related phrases
-            fetchRelatedPhrases(langTo, convertedData.translation.phrase)
+            // fetching quick summary and related phrases
+            autocomplete(langFrom,convertedData.original.normalized_phrase)
+            .then(openSearchResult => {
+              convertedData.original.summary = openSearchResult[0].description;
+              return fetchRelatedPhrases(langTo, convertedData.translation.phrase);
+            })
             .then(relatedPhrases => {
               convertedData.translation.related = relatedPhrases;
               deferred.resolve(convertedData);
@@ -113,7 +117,7 @@ export default function wikipediaTranslator($q, searchHintFetcher,
     return result;
   }
 
-  function convertWikipediaResponse(searchedPhrase, data) {
+  function convertWikipediaResponse(langFrom, searchedPhrase, data) {
     const result = {
       original: {
         phrase: searchedPhrase,
@@ -128,6 +132,7 @@ export default function wikipediaTranslator($q, searchHintFetcher,
       const pageKey = Object.keys(data.query.pages);
       const translationData = data.query.pages[pageKey];
       result.original.normalized_phrase = translationData.title;
+      result.original.langcode = langFrom;
       result.original.desc = translationData.extract;
       result.original.url = translationData.fullurl;
       if (translationData.thumbnail) {
@@ -137,11 +142,16 @@ export default function wikipediaTranslator($q, searchHintFetcher,
         && typeof translationData.pageprops.disambiguation === 'string') {
         result.disambiguation = true;
       }
-      result.translation.phrase = translationData.langlinks[0]['*'];
-      result.translation.langname = translationData.langlinks[0].langname;
-      result.translation.langcode = translationData.langlinks[0].lang;
-      result.translation.url = translationData.langlinks[0].url;
-      result.translation.autonym = translationData.langlinks[0].autonym;
+      if (!translationData.langlinks) {
+        result.translation.error = result.translation.error || {};
+        result.translation.error.noResult = true;
+      } else {
+        result.translation.phrase = translationData.langlinks[0]['*'];
+        result.translation.langname = translationData.langlinks[0].langname;
+        result.translation.langcode = translationData.langlinks[0].lang;
+        result.translation.url = translationData.langlinks[0].url;
+        result.translation.autonym = translationData.langlinks[0].autonym;
+      }
     }
     return result;
   }

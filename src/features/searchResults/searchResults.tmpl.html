@@ -28,12 +28,24 @@
 </div>
 
 <div layout="column" layout-align="center" flex ng-if="vm.state === 'result'">
+    <md-card class="original-summary">
+        <md-card-content>
+            <p>
+                <span class="flag-icon" ng-class="vm.getFlagIconClass(vm.result.original.langcode)"></span>
+                <span md-highlight-text="vm.result.original.normalized_phrase">
+                    {{ vm.result.original.summary }}
+                </span>
+                <a ng-href="{{ vm.result.original.url }}" target="_blank"><i class="fa fa-external-link"></i></a>
+            </p>
+        </md-card-content>
+    </md-card>
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">{{ vm.result.translation.phrase }}</span>
                 <span class="md-subhead">
-                    <span class="flag-icon" ng-class="'flag-icon-' + vm.result.translation.langcode"></span>
+                    <span class="flag-icon" ng-class="vm.getFlagIconClass(vm.result.translation.langcode)"></span>
                     {{ vm.result.translation.langname }}
                     ({{ vm.result.translation.autonym }})
                 </span>

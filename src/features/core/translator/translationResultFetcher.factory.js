@@ -1,6 +1,6 @@
-translationResultFetcher.$inject = ['$http', 'wdOrigin'];
+translationResultFetcher.$inject = ['$q', '$http', 'wdOrigin'];
 
-export default function translationResultFetcher($http, wdOrigin) {
+export default function translationResultFetcher($q, $http, wdOrigin) {
   return {
     translate,
   };
@@ -17,7 +17,8 @@ export default function translationResultFetcher($http, wdOrigin) {
     if (!langTo || langTo.length < 1) {
       throw new Error('Invalid to language parameter');
     }
-    return $http({
+    const deferred = $q.defer();
+    $http({
       url: generateUrl(langFrom),
       method: 'JSONP',
       params: {
@@ -35,11 +36,59 @@ export default function translationResultFetcher($http, wdOrigin) {
         format: 'json',
         callback: 'JSON_CALLBACK',
       },
+    }).then((response) => {
+      try {
+        const convertedData = convertWikipediaResponse(langFrom, phrase, response.data);
+        deferred.resolve(convertedData);
+      } catch (e) {
+        deferred.reject(e.message);
+      }
+    }, (...args) => {
+      deferred.reject.apply(this, args);
     });
+    return deferred.promise;
   }
 
   function generateUrl(langFrom) {
     return `https://${langFrom}.wikipedia.org/w/api.php`;
   }
 
+  function convertWikipediaResponse(langFrom, searchedPhrase, data) {
+    const result = {
+      original: {
+        phrase: searchedPhrase,
+      },
+      translation: {},
+    };
+
+    if (data && data.query && data.query.pages
+      && Object.keys(data.query.pages).length === 1
+      && Object.keys(data.query.pages)[0] >= 0)
+    {
+      const pageKey = Object.keys(data.query.pages);
+      const translationData = data.query.pages[pageKey];
+      result.original.normalized_phrase = translationData.title;
+      result.original.langcode = langFrom;
+      result.original.desc = translationData.extract;
+      result.original.url = translationData.fullurl;
+      if (translationData.thumbnail) {
+        result.original.thumbnail = translationData.thumbnail.source;
+      }
+      if (translationData.pageprops
+        && typeof translationData.pageprops.disambiguation === 'string') {
+        result.disambiguation = true;
+      }
+      if (!translationData.langlinks) {
+        result.translation.error = result.translation.error || {};
+        result.translation.error.noResult = true;
+      } else {
+        result.translation.phrase = translationData.langlinks[0]['*'];
+        result.translation.langname = translationData.langlinks[0].langname;
+        result.translation.langcode = translationData.langlinks[0].lang;
+        result.translation.url = translationData.langlinks[0].url;
+        result.translation.autonym = translationData.langlinks[0].autonym;
+      }
+    }
+    return result;
+  }
 }

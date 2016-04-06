@@ -1,12 +1,13 @@
-disambiguationFetcher.$inject = ['$http'];
+disambiguationFetcher.$inject = ['$q', '$http'];
 
-export default function disambiguationFetcher($http) {
+export default function disambiguationFetcher($q, $http) {
   return {
     similarTo,
   };
 
   function similarTo(lang, phrase){
-    return $http({
+    const deferred = $q.defer();
+    $http({
       url: genrateUrl(lang),
       method: 'JSONP',
       params: {
@@ -17,10 +18,34 @@ export default function disambiguationFetcher($http) {
         format: 'json',
         callback: 'JSON_CALLBACK',
       },
+    }).then((response) => {
+      try {
+        const convertedData = convertDisambiguationData(response.data);
+        deferred.resolve(convertedData);
+      } catch (e) {
+        deferred.reject(e.message);
+      }
+    }, (...args) => {
+      deferred.reject.apply(this, args);
     });
+    return deferred.promise;
   }
 
   function genrateUrl(lang) {
     return `https://${lang}.wikipedia.org/w/api.php`;
+  }
+
+  function convertDisambiguationData(data) {
+    let result = [];
+    if (data && data.query && data.query.pages
+      && Object.keys(data.query.pages).length > 1) {
+      result = Object.keys(data.query.pages).map(pageKey => {
+        return {
+          title: data.query.pages[pageKey].title,
+          pageId: data.query.pages[pageKey].pageid,
+        };
+      });
+    }
+    return result;
   }
 }

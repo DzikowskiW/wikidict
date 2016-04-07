@@ -2,40 +2,82 @@
 /* global angular */
 
 import { expect } from 'chai';
-import sinon from 'sinon';
 import translator from './index';
 
-describe('App Translator Module', function() {
-  describe('Factory: searchHintFetcher', function() {
-    let hintFetcher;
+describe('App Translator Module: searchHintFetcher', function() {
+  let hintFetcher;
+  let $httpBackend;
 
-    // MOCKS
-    const promise = {
-      then() {},
-    };
-    const httpMock = sinon.stub().returns(promise);
+  // SETUP
+  beforeEach(function() {
+    angular.mock.module(translator);
 
-    // SETUP
-    beforeEach(function () {
-      angular.mock.module(translator);
+    angular.mock.inject(function ($injector) {
+      hintFetcher = $injector.get('searchHintFetcher');
+      $httpBackend = $injector.get('$httpBackend');
+    });
+  });
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
 
-      angular.mock.module(function ($provide) {
-        $provide.value('$http', httpMock);
+  // TESTS
+  it('should have an autocomplete method that returns promise', function () {
+    expect(hintFetcher).to.respondTo('autocomplete');
+  });
+
+  it('autocomplete should successfully process OpenSearch input', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSON_CALLBACK&format=json&limit=10&namespace=0&search=phrase')
+      .respond(200, ['phrase',
+        ['phraseone', 'phrasetwo'],
+        ['Phrase One Description', 'Phrase Two Desc'],
+        ['http://phraseone.link', 'http://phrasetwo.link'],
+      ]);
+
+    hintFetcher
+      .autocomplete('en', 'phrase')
+      .then(result => {
+        expect(result).to.deep.equal([
+          { phrase: 'phraseone',
+            description: 'Phrase One Description',
+            url: 'http://phraseone.link' },
+          { phrase: 'phrasetwo',
+            description: 'Phrase Two Desc',
+            url: 'http://phrasetwo.link' },
+        ]);
+        done();
       });
 
-      angular.mock.inject(function ($injector) {
-        hintFetcher = $injector.get('searchHintFetcher');
+    $httpBackend.flush();
+  });
+
+  it('autocomplete should reject invalid input', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSON_CALLBACK&format=json&limit=10&namespace=0&search=phrase')
+      .respond(200, { query: '' });
+
+    hintFetcher
+      .autocomplete('en', 'phrase')
+      .catch(() => {
+        done();
       });
-    });
 
-    // TESTS
-    it('should have an autocomplete method that returns promise', function () {
-      expect(hintFetcher).to.respondTo('autocomplete');
-    });
+    $httpBackend.flush();
+  });
 
-    it('autocomplete should return promise', function () {
-      const response = hintFetcher.autocomplete('en', 'phrase');
-      expect(response).to.respondTo('then');
-    });
+  it('autocomplete should handle server problems', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=opensearch&callback=JSON_CALLBACK&format=json&limit=10&namespace=0&search=phrase')
+      .respond(500, '');
+
+    hintFetcher
+      .autocomplete('en', 'phrase')
+      .catch(() => {
+        done();
+      });
+
+    $httpBackend.flush();
   });
 });

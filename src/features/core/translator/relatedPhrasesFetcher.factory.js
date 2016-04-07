@@ -36,14 +36,10 @@ export default function relatedPhrasesFetcher($q, $http) {
 
   function convertRelatedData(data) {
     let result = [];
-    if (data && data.query && data.query.pages
-      && Object.keys(data.query.pages).length === 1
-      && Object.keys(data.query.pages)[0] >= 0) {
-      const pageKey = Object.keys(data.query.pages);
-      const redirects = data.query.pages[pageKey].redirects;
-      if (redirects) {
-        result = redirects.map(el => { return { title: el.title }; });
-      }
+    const pageKey = Object.keys(data.query.pages);
+    const redirects = data.query.pages[pageKey].redirects;
+    if (redirects) {
+      result = redirects.map(el => { return { title: el.title }; });
     }
     return result;
   }

@@ -2,38 +2,93 @@
 /* global angular */
 
 import { expect } from 'chai';
-import sinon from 'sinon';
 import translator from './index';
 
 describe('App Translator Module: disambiguationFetcher', function() {
-  let relatedFetcher;
-
-  // MOCKS
-  const promise = {
-    then() {},
-  };
-  const httpMock = sinon.stub().returns(promise);
+  let disambiguationFetcher;
+  let $httpBackend;
 
   // SETUP
-  beforeEach(function () {
+  beforeEach(function() {
     angular.mock.module(translator);
 
-    angular.mock.module(function ($provide) {
-      $provide.value('$http', httpMock);
-    });
-
     angular.mock.inject(function ($injector) {
-      relatedFetcher = $injector.get('disambiguationFetcher');
+      $httpBackend = $injector.get('$httpBackend');
+      disambiguationFetcher = $injector.get('disambiguationFetcher');
     });
+  });
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
   });
 
   // TESTS
   it('should have a similarTo method', function () {
-    expect(relatedFetcher).to.respondTo('similarTo');
+    expect(disambiguationFetcher).to.respondTo('similarTo');
   });
 
-  it('similarTo should return promise', function () {
-    const response = relatedFetcher.similarTo('en', 'phrase');
-    expect(response).to.respondTo('then');
+  it('similarTo should successfully process correct input', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=query&callback=JSON_CALLBACK&format=json&generator=links&prop=categories&titles=test')
+      .respond({
+        query: {
+          pages: {
+            1: {
+              pageid: 1,
+              title: 'test one',
+            },
+            22134: {
+              pageid: 22134,
+              title: 'test two',
+            },
+            55132: {
+              pageid: 55132,
+              title: 'test three',
+            },
+          },
+        },
+      });
+    const promise = disambiguationFetcher.similarTo('en', 'test');
+    promise.then(resultData => {
+      expect(resultData).to.deep.equal([
+        {
+          title: 'test one',
+          pageId: 1,
+        },
+        {
+          title: 'test two',
+          pageId: 22134,
+        },
+        {
+          title: 'test three',
+          pageId: 55132,
+        },
+      ]);
+      done();
+    });
+    $httpBackend.flush();
+  });
+
+  it('similarTo should reject invalid input', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=query&callback=JSON_CALLBACK&format=json&generator=links&prop=categories&titles=test')
+      .respond(200, { query: '' });
+    const promise = disambiguationFetcher.similarTo('en', 'test');
+    promise.catch(() => {
+      done();
+    });
+    $httpBackend.flush();
+  });
+
+  it('similarTo should graceful handle server outage', function (done) {
+    $httpBackend
+      .expectJSONP('https://en.wikipedia.org/w/api.php?action=query&callback=JSON_CALLBACK&format=json&generator=links&prop=categories&titles=test')
+      .respond(500, '');
+    const promise = disambiguationFetcher.similarTo('en', 'test');
+    promise.catch(() => {
+      done();
+    });
+    $httpBackend.flush();
   });
 });

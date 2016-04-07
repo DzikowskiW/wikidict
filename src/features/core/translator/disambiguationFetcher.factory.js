@@ -36,16 +36,11 @@ export default function disambiguationFetcher($q, $http) {
   }
 
   function convertDisambiguationData(data) {
-    let result = [];
-    if (data && data.query && data.query.pages
-      && Object.keys(data.query.pages).length > 1) {
-      result = Object.keys(data.query.pages).map(pageKey => {
-        return {
-          title: data.query.pages[pageKey].title,
-          pageId: data.query.pages[pageKey].pageid,
-        };
-      });
-    }
-    return result;
+    return Object.keys(data.query.pages).map(pageKey => {
+      return {
+        title: data.query.pages[pageKey].title,
+        pageId: data.query.pages[pageKey].pageid,
+      };
+    });
   }
 }

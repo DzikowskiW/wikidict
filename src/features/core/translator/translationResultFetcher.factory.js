@@ -60,9 +60,10 @@ export default function translationResultFetcher($q, $http, wdOrigin) {
       },
       translation: {},
     };
-
-    if (data && data.query && data.query.pages
-      && Object.keys(data.query.pages).length === 1
+    if (!(data && data.query && data.query.pages)) {
+      throw new Error('Invalid response');
+    }
+    if (Object.keys(data.query.pages).length === 1
       && Object.keys(data.query.pages)[0] >= 0)
     {
       const pageKey = Object.keys(data.query.pages);

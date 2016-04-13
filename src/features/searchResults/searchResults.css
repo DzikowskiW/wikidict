@@ -5,3 +5,20 @@ md-card.original-summary {
 md-card.original-summary .highlight {
     font-weight: bold;
 }
+
+.ng-enter.ng-enter-active  md-card{
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    -webkit-transform: translate(0, 0%);
+    -moz-transform: translate(0, 0%);
+    -ms-transform: translate(0, 0%);
+    transform: translate(0, 0%);
+}
+
+.ng-enter md-card{
+    opacity: 0;
+    -webkit-transform: translate(0, -200%);
+    -moz-transform: translate(0, -100%);
+    -ms-transform: translate(0, -100%);
+    transform: translate(0, -200%);
+}

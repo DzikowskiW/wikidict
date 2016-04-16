@@ -4,6 +4,7 @@
 import { expect } from 'chai';
 import translatorModule from './index';
 import 'babel-polyfill';
+import sinon from 'sinon';
 
 describe('App Translator Module', function() {
   describe('Factory: wikipediaTranslator', function() {
@@ -14,6 +15,7 @@ describe('App Translator Module', function() {
     // SETUP
     beforeEach(function () {
       angular.mock.module(translatorModule);
+      $rootScope = null;
     });
 
     // TESTS
@@ -51,13 +53,153 @@ describe('App Translator Module', function() {
       expect(translator.similarTo()).to.equal(returnedValue);
     });
 
-    xit('translate should fetch translation results', function(){});
-    xit('translate should fetch quick summary of translated results', function(){});
-    xit('translate should fetch related phrases of translated results', function(){});
-    xit('translate should resolve disambiguation when it occurs', function(){});
+    it('translate should fetch translation results', function(done){
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+      });
+      const translator = mockTranslate();
+      translator
+        .translate('pl', 'fr', 'pies')
+        .then((data) => {
+          expect(data).to.deep.equal({
+            original: {
+              phrase: 'pies',
+              summary: 'Pies Description',
+              normalized_phrase: 'Pies domowy',
+              langcode: 'pl',
+              desc: 'abc',
+              url: 'https://pl.wikipedia.org/wiki/Pies_domowy',
+              thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Collage_of_Nine_Dogs.jpg/200px-Collage_of_Nine_Dogs.jpg',
+            },
+            translation: {
+              phrase: 'Chien',
+              langname: 'francuski',
+              langcode: 'fr',
+              url: 'https://fr.wikipedia.org/wiki/Chien',
+              autonym: 'fran\u00e7ais',
+              related: [
+                { title: 'similar phrase' },
+                { title: 'another similar phrase' },
+              ],
+            },
+          });
+          done();
+        });
+      $rootScope.$apply();
+    });
+
+    it('translate should resolve disambiguation when it occurs', function(done) {
+      let translator;
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+        mockTranslate();
+
+        const resultFetcher = $injector.get('translationResultFetcher');
+        const $q = $injector.get('$q');
+        resultFetcher.translate = () => {
+          return $q.when({
+            original: {
+              phrase: 'pies1',
+              normalized_phrase: 'Pies domowy',
+              langcode: 'pl',
+            },
+            disambiguation: true,
+          });
+        };
+
+        translator = $injector.get('translator');
+      });
+
+      translator
+        .translate('pl', 'fr', 'pies')
+        .then((data) => {
+          expect(data.disambiguation).to.deep.equal([
+            {
+              title: 'test one',
+              pageId: 1,
+            },
+            {
+              title: 'test two',
+              pageId: 22134,
+            },
+            {
+              title: 'test three',
+              pageId: 55132,
+            },
+          ]);
+          done();
+        });
+      $rootScope.$apply();
+    });
+
     xit('translate should quietly fail when it is impossible to fetch summary', function(){});
     xit('translate should quietly fail when it is impossible to fetch related phrases', function(){});
     xit('translate should fail when it is impossible to fetch translation results', function(){});
     xit('translate should fail when it is impossible to fetch disambiguation results', function(){});
+
+    // HELPERS
+    function mockTranslate() {
+      let translator;
+      angular.mock.inject(function($injector) {
+        const $q = $injector.get('$q');
+        const resultFetcher = $injector.get('translationResultFetcher');
+        resultFetcher.translate = () => {
+          return $q.when({
+            original: {
+              phrase: 'pies',
+              normalized_phrase: 'Pies domowy',
+              langcode: 'pl',
+              desc: 'abc',
+              url: 'https://pl.wikipedia.org/wiki/Pies_domowy',
+              thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Collage_of_Nine_Dogs.jpg/200px-Collage_of_Nine_Dogs.jpg',
+            },
+            translation: {
+              phrase: 'Chien',
+              langname: 'francuski',
+              langcode: 'fr',
+              url: 'https://fr.wikipedia.org/wiki/Chien',
+              autonym: 'fran\u00e7ais',
+            },
+          });
+        };
+
+        const hintFetcher = $injector.get('searchHintFetcher');
+        sinon.stub(hintFetcher, 'autocomplete', () => {
+          return $q.when([{
+            phrase: 'pies',
+            description: 'Pies Description',
+            url: 'http://pies.link' }]);
+        });
+
+        const relatedPhrasesFetcher = $injector.get('relatedPhrasesFetcher');
+        sinon.stub(relatedPhrasesFetcher, 'relatedTo', () => {
+          return $q.when([
+            { title: 'similar phrase' },
+            { title: 'another similar phrase' },
+          ]);
+        });
+
+        const disambiguationFetcher = $injector.get('disambiguationFetcher');
+        sinon.stub(disambiguationFetcher, 'similarTo', () => {
+          return $q.when([
+            {
+              title: 'test one',
+              pageId: 1,
+            },
+            {
+              title: 'test two',
+              pageId: 22134,
+            },
+            {
+              title: 'test three',
+              pageId: 55132,
+            },
+          ]);
+        });
+        translator = $injector.get('translator');
+      });
+
+      return translator;
+    }
   });
 });

@@ -132,10 +132,119 @@ describe('App Translator Module', function() {
       $rootScope.$apply();
     });
 
-    xit('translate should quietly fail when it is impossible to fetch summary', function(){});
-    xit('translate should quietly fail when it is impossible to fetch related phrases', function(){});
-    xit('translate should fail when it is impossible to fetch translation results', function(){});
-    xit('translate should fail when it is impossible to fetch disambiguation results', function(){});
+    it('translate should quietly fail when it is impossible to fetch summary', function(done){
+      let translator;
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+        const $q = $injector.get('$q');
+        mockTranslate();
+
+        const hintFetcher = $injector.get('searchHintFetcher');
+        hintFetcher.autocomplete = () => {
+          let deferred = $q.defer();
+          deferred.reject();
+          return deferred.promise;
+        };
+
+        translator = $injector.get('translator');
+      });
+
+      translator
+        .translate('pl', 'fr', 'piesy')
+        .then((data) => {
+          expect(data.original.summary).to.equal(null);
+          done();
+        });
+      $rootScope.$apply();
+    });
+
+    it('translate should quietly fail when it is impossible to fetch related phrases', function(done) {
+      let translator;
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+        const $q = $injector.get('$q');
+        mockTranslate();
+
+        const relatedPhrasesFetcher = $injector.get('relatedPhrasesFetcher');
+        relatedPhrasesFetcher.relatedTo = () => {
+          let deferred = $q.defer();
+          deferred.reject();
+          return deferred.promise;
+        };
+
+        translator = $injector.get('translator');
+      });
+
+      translator
+        .translate('pl', 'fr', 'pies')
+        .then((data) => {
+          expect(data.translation.related).to.deep.equal([]);
+          done();
+        });
+      $rootScope.$apply();
+    });
+
+    it('translate should fail when it is impossible to fetch translation results', function(done) {
+      let translator;
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+        const $q = $injector.get('$q');
+        mockTranslate();
+
+        const resultFetcher = $injector.get('translationResultFetcher');
+        resultFetcher.translate = () => {
+          let deferred = $q.defer();
+          deferred.reject();
+          return deferred.promise;
+        };
+
+        translator = $injector.get('translator');
+      });
+
+      translator
+        .translate('pl', 'fr', 'pies')
+        .catch(() => {
+          done();
+        });
+      $rootScope.$apply();
+    });
+
+    it('translate should fail when it is impossible to fetch disambiguation results', function(done) {
+      let translator;
+      angular.mock.inject(($injector) => {
+        $rootScope = $injector.get('$rootScope');
+        const $q = $injector.get('$q');
+        mockTranslate();
+
+        const resultFetcher = $injector.get('translationResultFetcher');
+        resultFetcher.translate = () => {
+          return $q.when({
+            original: {
+              phrase: 'pies',
+              normalized_phrase: 'Pies domowy',
+              langcode: 'pl',
+            },
+            disambiguation: true,
+          });
+        };
+
+        const disambiguationFetcher = $injector.get('disambiguationFetcher');
+        disambiguationFetcher.similarTo = () => {
+          let deferred = $q.defer();
+          deferred.reject();
+          return deferred.promise;
+        };
+
+        translator = $injector.get('translator');
+      });
+
+      translator
+        .translate('pl', 'fr', 'pies')
+        .catch(() => {
+          done();
+        });
+      $rootScope.$apply();
+    });
 
     // HELPERS
     function mockTranslate() {

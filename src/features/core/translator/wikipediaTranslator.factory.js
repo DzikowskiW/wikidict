@@ -36,22 +36,28 @@ export default function wikipediaTranslator($q, searchHintFetcher,
               .then(result => {
                 convertedData.disambiguation = result;
                 deferred.resolve(convertedData);
-              });
+              })
+              .catch(() => deferred.reject(convertedData));
           } else {
-            // fetching quick summary and related phrases
             autocomplete(langFrom, convertedData.original.normalized_phrase)
+              // fetching quick summary
               .then(openSearchResult => {
                 if (openSearchResult && openSearchResult.length) {
                   convertedData.original.summary = openSearchResult[0].description;
                 }
                 return fetchRelatedPhrases(langTo, convertedData.translation.phrase);
+              }, () => {
+                // if failed to fetch summary
+                convertedData.original.summary = null;
+                return fetchRelatedPhrases(langTo, convertedData.translation.phrase);
               })
+              // fetching related phrases
               .then(relatedPhrases => {
                 convertedData.translation.related = relatedPhrases;
-                deferred.resolve(convertedData);
-              }, (...args) => {
-                deferred.reject.apply(this, args);
-              });
+              }, () => {
+                convertedData.translation.related = [];
+              })
+            .finally(() => deferred.resolve(convertedData));
           }
         } catch (e) {
           deferred.reject(e.message);

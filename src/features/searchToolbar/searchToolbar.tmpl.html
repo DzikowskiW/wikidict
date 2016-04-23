@@ -13,6 +13,7 @@
             <wd-language-selector lang-from="vm.langFrom" lang-to="vm.langTo"></wd-language-selector>
             <md-autocomplete
                     flex="50"
+                    wd-blur-md-autocomplete-on-enter
                     md-selected-item="vm.selectedItem"
                     md-search-text="vm.searchPhrase"
                     md-items="item in vm.autocomplete(vm.searchPhrase)"

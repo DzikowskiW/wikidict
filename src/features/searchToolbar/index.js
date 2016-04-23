@@ -10,8 +10,10 @@ import appCore from '../core';
 
 import languageSelector from './languageSelector/languageSelector.component';
 import searchToolbarComponent from './searchToolbar.component';
+import blurAutocompleteDirective from './blurAutocomplete.directive';
 
 export default angular.module('wikidict.searchToolbar', [mdAngular, appCore, uiRouter])
+  .directive('wdBlurMdAutocompleteOnEnter', blurAutocompleteDirective)
   .component('wdLanguageSelector', languageSelector)
   .component('wdSearchToolbar', searchToolbarComponent)
   .name;

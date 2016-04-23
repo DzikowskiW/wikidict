@@ -1,22 +1,37 @@
-<div layout="column" layout-align="center center" ng-if="vm.state ==='loading'">
+<div layout="column" layout-align="center center" ng-show="vm.state ==='loading'">
     <md-progress-circular md-mode="indeterminate" md-diameter="100"></md-progress-circular>
 </div>
 
-<div layout="column" layout-align="center" flex ng-if="vm.state === 'notFound'">
-    <md-card class="alert">
+<div layout="column" layout-align="center" flex ng-hide="vm.state ==='loading'">
+
+    <md-card class="original-summary" ng-if="vm.result.original.summary">
+        <md-card-content>
+            <p>
+                <span class="flag-icon" ng-class="vm.getFlagIconClass(vm.result.original.langcode)"></span>
+                <span md-highlight-text="vm.result.original.normalized_phrase">
+                    {{ vm.result.original.summary }}
+                </span>
+            </p>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="start center">
+            <md-button href="{{ vm.result.original.url }}" target="_blank">
+                Open in <i class="fa fa-wikipedia-w"></i>
+            </md-button>
+        </md-card-actions>
+    </md-card>
+
+    <md-card class="danger-message" ng-if="vm.state === 'notFound'">
         <md-card-title>
             <md-card-title-text>
-                <span class="md-headline">
+                <span>
                     <i class="fa fa-exclamation-circle"></i>
-                    Translation not found :(
+                    Translation not found
                 </span>
             </md-card-title-text>
         </md-card-title>
     </md-card>
-</div>
 
-<div layout="column" layout-align="center" flex ng-if="vm.state === 'disambiguation'">
-    <md-content>
+    <md-content ng-if="vm.state === 'disambiguation'">
         <md-list flex>
             <md-subheader class="md-no-sticky">Please specify what you mean:</md-subheader>
             <md-list-item ng-repeat="phrase in vm.result.disambiguation"
@@ -25,23 +40,8 @@
             </md-list-item>
         </md-list>
     </md-content>
-</div>
 
-<div layout="column" layout-align="center" flex ng-if="vm.state === 'result'">
-    <button ng-click="vm.hidde = !vm.hidde">show/hide</button>
-    <md-card class="original-summary" ng-hide="vm.hidde">
-        <md-card-content>
-            <p>
-                <span class="flag-icon" ng-class="vm.getFlagIconClass(vm.result.original.langcode)"></span>
-                <span md-highlight-text="vm.result.original.normalized_phrase">
-                    {{ vm.result.original.summary }}
-                </span>
-                <a ng-href="{{ vm.result.original.url }}" target="_blank"><i class="fa fa-external-link"></i></a>
-            </p>
-        </md-card-content>
-    </md-card>
-
-    <md-card>
+    <md-card class="results-card" ng-if="vm.state === 'result'">
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">{{ vm.result.translation.phrase }}</span>
@@ -51,19 +51,16 @@
                     ({{ vm.result.translation.autonym }})
                 </span>
                 <md-chips ng-model="vm.result.translation.related" readonly="true">
-                    <md-chip-template>
-                        <span ngclipboard ng-click="vm.showCopyConfirmation($chip.title)"
+                    <md-chip-template ng-click="vm.showCopyConfirmation($chip.title)">
+                        <span ngclipboard
                               data-clipboard-text="{{ $chip.title }}">
                           <i class="fa fa-clone"></i> {{$chip.title}}
                         </span>
                     </md-chip-template>
-                    <button md-chip-remove class="md-primary vegetablechip">
-                        <md-icon md-svg-icon="md-close"></md-icon>
-                    </button>
                 </md-chips>
             </md-card-title-text>
-            <md-card-title-media>
-                <div class="md-media-lg card-media">
+            <md-card-title-media ng-if="vm.result.original.thumbnail">
+                <div class="md-media-lg card-media results-thumbnail">
                     <img ng-src="{{ vm.result.original.thumbnail }}" />
                 </div>
             </md-card-title-media>

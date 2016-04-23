@@ -1,5 +1,5 @@
 md-card.original-summary {
-    color: rgba(0,0,0,0.54);
+    line-height:1.5em;
 }
 
 md-card.original-summary .highlight {
@@ -15,10 +15,32 @@ md-card.original-summary .highlight {
     transform: translate(0, 0%);
 }
 
-.ng-enter md-card{
+.ng-enter .md-card{
     opacity: 0;
     -webkit-transform: translate(0, -200%);
     -moz-transform: translate(0, -100%);
     -ms-transform: translate(0, -100%);
     transform: translate(0, -200%);
+}
+
+.results-thumbnail {
+    margin-left: 10px;
+}
+
+
+md-card.results-card .md-chips .md-chip {
+    cursor:pointer;
+}
+
+md-card.results-card  .md-chips .md-chip:hover {
+    background-color: #BDBDBD;
+}
+
+md-card.results-card md-chips .md-chips {
+    box-shadow: none;
+}
+
+md-card.danger-message {
+    color: #DD2C00;
+    background: #FBE9E7;
 }

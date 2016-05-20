@@ -9,10 +9,11 @@
         </h2>
     </div>
     <form  ng-submit="vm.search(vm.searchPhrase)" >
-        <div layout layout-align="center center">
-            <wd-language-selector lang-from="vm.langFrom" lang-to="vm.langTo"></wd-language-selector>
+        <div layout layout-wrap layout-align="center center">
+            <wd-language-selector hide-xs lang-from="vm.langFrom" lang-to="vm.langTo"></wd-language-selector>
             <md-autocomplete
                     flex="50"
+                    flex-xs="90"
                     wd-blur-md-autocomplete-on-enter
                     md-selected-item="vm.selectedItem"
                     md-search-text="vm.searchPhrase"
@@ -26,6 +27,7 @@
                     <span md-highlight-text="vm.searchPhrase">{{item.phrase}}</span>
                 </md-item-template>
             </md-autocomplete>
+            <wd-language-selector hide show-xs lang-from="vm.langFrom" lang-to="vm.langTo"></wd-language-selector>
             <md-input-container>
                 <md-button class="md-raised md-primary md-accent" type="submit">
                     <i class="fa fa-search"></i> Search

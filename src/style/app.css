@@ -36,3 +36,10 @@ md-card.alert {
     color: #fff;
 }
 
+
+/* layout-xs : 600px */
+@media (max-width: 600px) {
+    .logoFont.big {
+        font-size: 32px;
+    }
+}

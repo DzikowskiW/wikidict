@@ -8,8 +8,6 @@ import theme from './material.theme';
 
 import '../style/app.css';
 import 'angular-material/angular-material.css';
-import 'angular-material/angular-material.layouts.css';
-//import 'font-awesome/css/font-awesome.css';
 
 export default angular.module('app', [angularMaterial, uiRouter, search])
   .component('wikiDict', appComponent)

@@ -1,7 +1,7 @@
 {
-  "name": "angular-webpack-workflow",
+  "name": "wikidict",
   "version": "1.0.0",
-  "description": "A workflow for Angular made with Webpack",
+  "description": "Translation tool based on Wikipedia's Language feature",
   "scripts": {
     "build": "rimraf dist && webpack --bail --progress --profile",
     "server": "webpack-dev-server --history-api-fallback --inline --progress",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Foxandxss/angular-webpack-workflow.git"
+    "url": "https://github.com/DzikowskiW/wikidict.git"
   },
-  "author": "Jesus Rodriguez",
-  "license": "MIT",
+  "author": "Wojciech Dzikowski",
+  "license": "MPL-2.0",
   "bugs": {
-    "url": "https://github.com/Foxandxss/angular-webpack-workflow/issues"
+    "url": "https://github.com/DzikowskiW/wikidict/issues"
   },
-  "homepage": "https://github.com/Foxandxss/angular-webpack-workflow",
+  "homepage": "https://github.com/DzikowskiW/wikidict",
   "dependencies": {
     "angular": "^1.5.2",
     "angular-animate": "^1.5.2",

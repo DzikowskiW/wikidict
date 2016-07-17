@@ -5,4 +5,3 @@
 Simple translator service using wikipedia.
 It is written as a standalone app, but it can be modified to be a component on your exisitng web app. 
 
-It is currently work in progress.

@@ -59,7 +59,8 @@
                     </md-chip-template>
                 </md-chips>
             </md-card-title-text>
-            <md-card-title-media ng-if="vm.result.original.thumbnail">
+
+            <md-card-title-media ng-if="vm.result.original.thumbnail" hide-xs>
                 <div class="md-media-lg card-media results-thumbnail">
                     <img ng-src="{{ vm.result.original.thumbnail }}" />
                 </div>

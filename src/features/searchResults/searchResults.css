@@ -23,8 +23,15 @@ md-card.original-summary .highlight {
     transform: translate(0, -200%);
 }
 
-.results-thumbnail {
+md-card md-card-title md-card-title-media .results-thumbnail {
     margin-left: 10px;
+    overflow:hidden;
+    border-radius: 50%;
+    width: 100%;
+    height:100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 

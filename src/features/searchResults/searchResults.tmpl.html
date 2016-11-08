@@ -51,18 +51,17 @@
                     ({{ vm.result.translation.autonym }})
                 </span>
                 <md-chips ng-model="vm.result.translation.related" readonly="true">
-                    <md-chip-template ng-click="vm.showCopyConfirmation($chip.title)">
-                        <span ngclipboard
-                              data-clipboard-text="{{ $chip.title }}">
-                          <i class="fa fa-clone"></i> {{$chip.title}}
+                    <md-chip-template>
+                        <span>
+                            {{$chip.title}}
                         </span>
                     </md-chip-template>
                 </md-chips>
             </md-card-title-text>
 
             <md-card-title-media ng-if="vm.result.original.thumbnail" hide-xs>
-                <div class="md-media-lg card-media results-thumbnail">
-                    <img ng-src="{{ vm.result.original.thumbnail }}" />
+                <div class="md-media-lg card-media results-thumbnail"
+                     ng-style="{'background-image': 'url('+vm.result.original.thumbnail+')'}">
                 </div>
             </md-card-title-media>
         </md-card-title>
